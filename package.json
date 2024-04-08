@@ -1,0 +1,23 @@
+{
+    "name": "petconnect",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "concurrently \"cd server && npm run nodemon\" \"cd client && npm run dev\""
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/TheBigBookMan/PetConnect.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/TheBigBookMan/PetConnect/issues"
+    },
+    "homepage": "https://github.com/TheBigBookMan/PetConnect#readme",
+    "dependencies": {
+        "concurrently": "^8.2.2"
+    }
+}
