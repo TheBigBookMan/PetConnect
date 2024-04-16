@@ -14,7 +14,7 @@ const authHttp = {
             db.query(sql, [userId], (err, result) => {
                 if (err) {
                     console.log(err);
-                    res.status(400).json({
+                    res.status(404).json({
                         error: "Failed to retrieve profile",
                     });
                     return;
@@ -23,7 +23,7 @@ const authHttp = {
                 if (result.length > 0) {
                     res.json(result[0]);
                 } else {
-                    res.status(400).json({ message: "Profile not found." });
+                    res.status(404).json({ message: "Profile not found." });
                 }
             });
         } catch (err) {
@@ -32,3 +32,5 @@ const authHttp = {
         }
     },
 };
+
+module.exports = authHttp;
