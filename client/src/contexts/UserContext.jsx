@@ -7,7 +7,9 @@ const UserProvider = ({ children }) => {
     // !!! TEMP
     // const [user, setUser] = useState(null);
     const [user, setUser] = useState({
-        userId: 1,
+        UserID: "",
+        Username: "",
+        Email: "",
     });
 
     // !! Temp
@@ -19,10 +21,16 @@ const UserProvider = ({ children }) => {
             const response = await api.post("/auth/login", { ...userData });
 
             if (response.status === 200) {
-                console.log(response.data);
+                const { Username, UserID, Email } = response.data;
+                setUser({
+                    Username,
+                    UserID,
+                    Email,
+                });
+                setIsLoggedIn(true);
+                return true;
             } else {
-                console.log(response);
-                alert(`Error: ${response.status} Text: ${response.statusText}`);
+                return false;
             }
         } catch (err) {
             console.log(err);

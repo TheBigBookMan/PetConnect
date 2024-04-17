@@ -1,7 +1,9 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+    const navigate = useNavigate();
     const { user, login, signUpUser } = useContext(UserContext);
     const [isSignIn, setIsSignIn] = useState(false);
     const [isSignUp, setIsSignUp] = useState(false);
@@ -24,7 +26,13 @@ const Login = () => {
     };
 
     const submitSignIn = async () => {
-        await login(signIn);
+        const checkLogin = await login(signIn);
+
+        if (checkLogin) {
+            navigate("/");
+        } else {
+            alert("Check your credentials and try again.");
+        }
     };
 
     const handleSignupChange = (e) => {
