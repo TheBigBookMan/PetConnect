@@ -7,11 +7,12 @@ const Login = () => {
     const [isSignUp, setIsSignUp] = useState(false);
 
     const [signIn, setSignIn] = useState({
-        email: "",
+        username: "",
         password: "",
     });
     const [signUp, setSignUp] = useState({
         email: "",
+        username: "",
         password: "",
     });
 
@@ -22,8 +23,8 @@ const Login = () => {
         });
     };
 
-    const submitSignIn = () => {
-        login(signIn);
+    const submitSignIn = async () => {
+        await login(signIn);
     };
 
     const handleSignupChange = (e) => {
@@ -78,9 +79,9 @@ const Login = () => {
                         onChange={handleSigninChange}
                         type="text"
                         className="pl-2 w-[220px] h-[40px] border border-red-500 rounded-xl"
-                        value={signIn.email}
-                        name={"email"}
-                        placeholder="Email..."
+                        value={signIn.username}
+                        name={"username"}
+                        placeholder="Username..."
                     />
                     <input
                         onChange={handleSigninChange}
@@ -108,6 +109,14 @@ const Login = () => {
                         value={signUp.email}
                         name={"email"}
                         placeholder="Email..."
+                    />
+                    <input
+                        onChange={handleSignupChange}
+                        type="text"
+                        className="pl-2 w-[220px] h-[40px] border border-red-500 rounded-xl"
+                        value={signUp.username}
+                        name={"username"}
+                        placeholder="Username..."
                     />
                     <input
                         onChange={handleSignupChange}

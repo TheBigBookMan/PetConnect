@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import { api } from "./../utils/api";
 
 export const UserContext = createContext();
 
@@ -6,21 +7,34 @@ const UserProvider = ({ children }) => {
     // !!! TEMP
     // const [user, setUser] = useState(null);
     const [user, setUser] = useState({
-        userId: 12345,
+        userId: 1,
     });
 
     // !! Temp
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const login = (userData) => {
-        // TODO make call to DB with email and passowrd and return the username and store in state with maybe name?
-        setUser({
-            userId: 12345,
-        });
+    const login = async (userData) => {
+        // TODO need to add JWT and cookies
+        try {
+            const response = await api.post("/auth/login", { ...userData });
+
+            if (response.status === 200) {
+                console.log(response.data);
+            } else {
+                console.log(response);
+                alert(`Error: ${response.status} Text: ${response.statusText}`);
+            }
+        } catch (err) {
+            console.log(err);
+            alert(
+                "Network error logging in, please refresh page and try again."
+            );
+        }
     };
 
     const logout = () => {
         setUser(null);
+        setIsLoggedIn(false);
     };
 
     const signUpUser = (userData) => {
