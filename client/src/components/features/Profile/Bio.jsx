@@ -3,6 +3,7 @@ import Me from "../../../assets/Me.jpg";
 import { MdEdit } from "react-icons/md";
 import Popup from "../../common/Elements/Popup";
 import { RotatingLines } from "react-loader-spinner";
+import Bird from "../../../images/Bird/Bird1.png";
 
 const Bio = ({ bio }) => {
     const [details, setDetails] = useState();
@@ -17,28 +18,30 @@ const Bio = ({ bio }) => {
             >
                 <div className="flex flex-col">
                     <p className="text-white">Edit Profile</p>
+                    <div className="flex flex-col"></div>
                 </div>
             </Popup>
             {bio ? (
-                <div className="flex gap-2">
-                    <img src={bio.ProfilePic} className="w-36 rounded-xl" />
-                    <div className="flex flex-col">
+                <div className="flex gap-2 w-full">
+                    <img src={Bird} className="w-36 rounded-xl" />
+                    <div className="flex flex-col w-full">
                         <div className="flex justify-between">
                             <div className="flex flex-col">
-                                <p className="text-white">
-                                    {bio.FirstName} {bio.LastName}
+                                <p className="text-cyan-500 font-bold">
+                                    {bio.Username}
                                 </p>
-                                <p className="text-white">{bio.Nationality}</p>
-                                <p className="text-white">{bio.Age} Years</p>
+                                <p className="text-white">
+                                    Animal: {bio.PetType}
+                                </p>
+                                <p className="text-white">
+                                    Breed: {bio.PetType}
+                                </p>
                             </div>
                             <MdEdit
                                 onClick={() => setEditProfilePopup(true)}
-                                className="text-cyan-500 text-2xl"
+                                className="text-cyan-500 text-2xl cursor-pointer"
                             />
                         </div>
-                        <p className="text-slate-300 text-sm w-full max-h-[50px] overflow-y-auto">
-                            {bio.Bio}
-                        </p>
                     </div>
                 </div>
             ) : (

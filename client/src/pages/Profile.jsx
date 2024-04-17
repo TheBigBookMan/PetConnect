@@ -12,27 +12,21 @@ const Profile = () => {
         try {
             const { userId } = user;
 
-            // const response = await api.get(`/api/user`);
-            if (Response.status === 200) {
+            const response = await api.get(`/auth/profile/${userId}`);
+
+            if (response.status === 200) {
                 console.log(response.data);
+                const { data } = response;
+
+                setBio({
+                    ProfilePic: data.ProfilePicURL,
+                    Username: data.Username,
+                    PetType: data.PetType,
+                });
             } else {
                 console.log(response);
                 alert(`Error: ${response.status} Text: ${response.statusText}`);
             }
-
-            // !!! TEMP
-            setBio({
-                FirstName: "Ben",
-                LastName: "Smerd",
-                Nationality: "Australian",
-                Age: 28,
-                Bio: `I am traveling because I enjoy meeting new people
-                from around the world. I am traveling because I
-                enjoy meeting new people from around the world. I am
-                traveling because I enjoy meeting new people from
-                around the world.`,
-                ProfilePic: Me,
-            });
         } catch (err) {
             console.log(err);
             alert("Network error.");
@@ -47,7 +41,7 @@ const Profile = () => {
 
     return (
         <div className="flex flex-col h-full w-full">
-            <Bio bio={bio} />
+            {bio && <Bio bio={bio} />}
         </div>
     );
 };
