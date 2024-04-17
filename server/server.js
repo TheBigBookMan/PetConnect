@@ -3,6 +3,7 @@ const routes = require("./routes");
 const db = require("./connection/database");
 const PORT = process.env.PORT || 3001;
 const app = express();
+const cors = require("cors");
 
 //? CORS configuration
 const corsOptions = {
@@ -20,7 +21,7 @@ db.connect((err) => {
 });
 
 // Use the CORS middleware with the options above
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
