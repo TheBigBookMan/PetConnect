@@ -1,16 +1,21 @@
 const db = require("../connection/database");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+require("dotenv").config();
 
 // TODO will need to incorporate JWT for security and probably some other stuff
+
+const SECRET_KEY = process.env.JWT_SECRET;
 
 const authHttp = {
     // TODO currently a very shit version
     login: async (req, res) => {
         const { username, password } = req.body;
         const sql =
-            "SELECT UserID, Username, Email FROM User WHERE Username = ? AND Password = ?";
+            "SELECT UserID, Username, Email, Password FROM User WHERE Username = ?";
 
         try {
-            db.query(sql, [username, password], (err, result) => {
+            db.query(sql, [username], async (err, result) => {
                 if (err) {
                     console.log(err);
                     res.status(404).json({
@@ -18,9 +23,47 @@ const authHttp = {
                     });
                     return;
                 }
-                console.log(result);
+
                 if (result.length > 0) {
-                    res.json(result[0]);
+                    const user = result[0];
+
+                    // ? Comparing hashed password
+                    const validPassword = await bcrypt.compare(
+                        password,
+                        user.Password
+                    );
+                    if (!validPassword) {
+                        return res
+                            .status(401)
+                            .json({ message: "Invalid credentials" });
+                    }
+
+                    const token = jwt.sign(
+                        {
+                            id: user.UserID,
+                            username: user.Username,
+                            email: user.Email,
+                        },
+                        SECRET_KEY,
+                        { expiresIn: "24h" }
+                    );
+
+                    // ? Sending the token in a cookie
+                    res.cookie("token", token, {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === "production",
+                        sameSite: "strict",
+                        maxAge: 24 * 60 * 60 * 1000,
+                    });
+
+                    res.json({
+                        message: "Authentication successful",
+                        user: {
+                            id: user.UserID,
+                            username: user.Username,
+                            email: user.Email,
+                        },
+                    });
                 } else {
                     res.status(404).json({
                         message: "Please check your credentials and try again.",
@@ -33,7 +76,10 @@ const authHttp = {
         }
     },
     getProfileInfo: async (req, res) => {
+        // !!! TEMP
         const { userId } = req.params;
+        // ? Proper
+        // const userId = req.user.userID;
         const sql = "SELECT * FROM User WHERE UserID = ?";
 
         try {
